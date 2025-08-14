@@ -47,10 +47,10 @@
 <script>
 (function(){
   // --- CONFIGURATION ---
-  // Your Google Drive File ID has been updated here
-  const TEMPLATE_ID = '1yusQPZ1ujoTb8qj16r8awd2wleB-6W_P';
+  // Your new, updated Google Drive File ID.
+  const TEMPLATE_ID = '1ZOPJ6MWL004rdS689MEB8DcwF6IThUQW';
   
-  // This is the correct URL format for direct downloads
+  // This is the correct direct-download URL format that works for images.
   const IMG_URL = `https://drive.google.com/uc?export=download&id=${TEMPLATE_ID}`;
 
   // Canvas and Text Settings
@@ -80,33 +80,31 @@
     const nameTxt = `${name} (${id})`, dateTxt = `${month}, ${year}`;
 
     try {
-      // Load image directly from the URL
       const img = new Image();
-      img.crossOrigin = "anonymous"; // Necessary for loading from another domain (Google Drive)
+      img.crossOrigin = "anonymous";
       img.src = IMG_URL;
       await new Promise((resolve, reject) => {
         img.onload = resolve;
-        img.onerror = () => reject('Failed to load template image. Please check that the Google Drive link is public.');
+        img.onerror = () => reject('Failed to load template. Please check the Google Drive sharing settings.');
       });
       
-      showStatus('Step 2: Drawing template...');
+      showStatus('Step 2: Drawing your details onto the template...');
       const canvas = document.createElement('canvas');
       canvas.width = W; canvas.height = H;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, W, H);
 
-      showStatus('Step 3: Adding personalized text...');
       ctx.fillStyle = TEXT_COLOR; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
       ctx.font = NAME_FONT; ctx.fillText(nameTxt, NAME_POS.x, H - NAME_POS.y);
       ctx.font = DATE_FONT; ctx.fillText(dateTxt, DATE_POS.x, H - DATE_POS.y);
 
-      showStatus('Step 4: Creating and downloading your PNG...');
+      showStatus('Step 3: Creating and downloading your certificate...');
       const link = document.createElement('a');
       link.download = `DXN-StarAgent_${name.replace(/\s+/g,'_')}_${month}_${year}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
 
-      showStatus('Success! Your certificate has been downloaded.');
+      showStatus('Success! Certificate downloaded.');
       setTimeout(hideStatus, 4000);
       e.target.reset();
 
@@ -120,4 +118,3 @@
 
 </body>
 </html>
-
