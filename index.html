@@ -2,398 +2,183 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=1527, initial-scale=1.0">
   <title>DXN Star Agent Certificate Generator</title>
   <style>
-    :root {
-      --primary-blue: #004d99;
-      --success-green: #10b981;
-      --error-red: #dc3545;
-      --light-bg: #f8f9fa;
-      --text-dark: #343a40;
-      --border-color: #dee2e6;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      font-family: 'Arial',sans-serif;
+      background: #e9ecef;
+      min-height:100vh; 
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:0;
     }
-    
     .container {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      overflow: hidden;
-      width: 100%;
-      max-width: 480px;
-      animation: slideUp 0.6s ease-out;
+      width: 460px; 
+      background: white; 
+      border-radius: 14px;
+      padding:32px 28px;
+      box-shadow:0 6px 32px rgba(0,0,0,0.09);
+      margin:32px 0;
     }
-    
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    h2 {margin-bottom:10px;color:#004d99;}
+    form label {
+      font-weight:bold;
+      margin-bottom:5px;
+      display:block;
+      color:#124876;
     }
-    
-    .header {
-      background: var(--primary-blue);
-      color: white;
-      padding: 30px 25px;
-      text-align: center;
+    input,select {
+      margin-bottom:18px;
+      width:100%;
+      padding: 10px 12px;
+      border: 1.6px solid #ccd6e1;
+      border-radius:6px;
+      font-size:16px;
     }
-    
-    .header h1 {
-      font-size: 26px;
-      font-weight: 700;
-      margin-bottom: 8px;
+    .row {display:flex;gap:12px;}
+    button {
+      background:#004d99;
+      color:white;
+      width:100%;
+      border:none;
+      padding:14px 0;font-size:18px;font-weight:bold;letter-spacing:.03em;
+      border-radius:7px;
+      cursor:pointer;
+      margin-top:10px;
+      transition:background 0.2s;
     }
-    
-    .header p {
-      opacity: 0.9;
-      font-size: 14px;
-    }
-    
-    .form-section {
-      padding: 35px 30px;
-    }
-    
-    .form-group {
-      margin-bottom: 25px;
-    }
-    
-    .form-label {
-      display: block;
-      font-weight: 600;
-      color: var(--text-dark);
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-    
-    .form-input, .form-select {
-      width: 100%;
-      padding: 14px 16px;
-      border: 2px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 16px;
-      transition: all 0.3s ease;
-    }
-    
-    .form-input:focus, .form-select:focus {
-      outline: none;
-      border-color: var(--primary-blue);
-      box-shadow: 0 0 0 3px rgba(0, 77, 153, 0.1);
-    }
-    
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-    
-    .generate-btn {
-      width: 100%;
-      background: linear-gradient(135deg, var(--primary-blue), #0056b3);
-      color: white;
-      border: none;
-      padding: 16px 24px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 10px;
-      box-shadow: 0 4px 15px rgba(0, 77, 153, 0.3);
-    }
-    
-    .generate-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 77, 153, 0.4);
-    }
-    
+    button:hover {background:#12397a;}
     .status {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 14px;
+      margin: 18px 0 0;
+      padding:10px;
+      font-size:15px;
+      border-radius: 7px;
+      text-align:center;
       display: none;
     }
-    
-    .status.loading {
-      background: #e3f2fd;
-      color: var(--primary-blue);
-    }
-    
-    .status.success {
-      background: #d4edda;
-      color: var(--success-green);
-    }
-    
-    .status.error {
-      background: #f8d7da;
-      color: var(--error-red);
-    }
-    
-    @media (max-width: 576px) {
-      .form-section {
-        padding: 25px 20px;
-      }
-      
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-    }
+    .loading {background:#e3f2fd;color:#004d99;}
+    .success {background:#e8f5e9;color:#2e7d32;}
+    .error {background:#ffebee;color:#b22222;}
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>DXN Certificate Generator</h1>
-      <p>Generate professional Star Agent certificates</p>
-    </div>
-    
-    <div class="form-section">
-      <form id="certificateForm">
-        <div class="form-group">
-          <label class="form-label" for="distributorName">Distributor Name</label>
-          <input 
-            type="text" 
-            id="distributorName" 
-            class="form-input"
-            placeholder="e.g. ANSHU VERMA"
-            required
-          >
+    <h2>Generate Star Agent Certificate</h2>
+    <form id="certForm" autocomplete="off">
+      <label for="name">Distributor Name</label>
+      <input required id="name" type="text" placeholder="Full Name (e.g. ANSHU VERMA)">
+      <label for="number">Distributor Number</label>
+      <input required id="number" type="text" placeholder="ID Number (e.g. 991958412)">
+      <div class="row">
+        <div style="flex:1">
+          <label for="month">Month</label>
+          <select id="month" required>
+            <option value="">Select</option>
+            <option>January</option>
+            <option>February</option>
+            <option>March</option>
+            <option>April</option>
+            <option>May</option>
+            <option>June</option>
+            <option>July</option>
+            <option>August</option>
+            <option>September</option>
+            <option>October</option>
+            <option>November</option>
+            <option>December</option>
+          </select>
         </div>
-        
-        <div class="form-group">
-          <label class="form-label" for="distributorId">Distributor ID</label>
-          <input 
-            type="text" 
-            id="distributorId" 
-            class="form-input"
-            placeholder="e.g. 991958412"
-            required
-          >
+        <div style="flex:1">
+          <label for="year">Year</label>
+          <select id="year" required>
+            <option value="">Year</option>
+          </select>
         </div>
-        
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="achievementMonth">Month</label>
-            <select id="achievementMonth" class="form-select" required>
-              <option value="">Select Month</option>
-              <option>January</option>
-              <option>February</option>
-              <option>March</option>
-              <option>April</option>
-              <option>May</option>
-              <option>June</option>
-              <option>July</option>
-              <option>August</option>
-              <option>September</option>
-              <option>October</option>
-              <option>November</option>
-              <option>December</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label" for="achievementYear">Year</label>
-            <select id="achievementYear" class="form-select" required></select>
-          </div>
-        </div>
-        
-        <button type="submit" class="generate-btn">
-          Generate Certificate
-        </button>
-      </form>
-      
+      </div>
+      <button type="submit">Generate Certificate</button>
       <div id="status" class="status"></div>
-    </div>
+    </form>
   </div>
-
   <script>
-    (function() {
-      'use strict';
-      
-      // ===== PRECISELY CORRECTED CONFIGURATION =====
-      const CONFIG = {
-        TEMPLATE_URL: 'assets/new-template.png',
-        CANVAS_WIDTH: 1527,
-        CANVAS_HEIGHT: 1080,
-        
-        // CORRECTED POSITIONS - Based on detailed comparison
-        POSITIONS: {
-          NAME: { x: 763, y: 440 },    // MOVED DOWN from 420 to 440 - lower in blank space
-          DATE: { x: 820, y: 630 }     // MOVED RIGHT from 763 to 820 - positioned more right
-        },
-        
-        // CORRECTED FONT SIZES - Based on reference analysis
-        FONTS: {
-          NAME: "italic bold 48px 'Times New Roman', serif",   // Keep name font same
-          DATE: "italic bold 42px 'Times New Roman', serif"    // INCREASED from 36px to 42px
-        },
-        
-        COLORS: {
-          TEXT: '#004d99'
-        }
-      };
-      
-      // ===== DOM ELEMENTS =====
-      const elements = {
-        form: document.getElementById('certificateForm'),
-        nameInput: document.getElementById('distributorName'),
-        idInput: document.getElementById('distributorId'),
-        monthSelect: document.getElementById('achievementMonth'),
-        yearSelect: document.getElementById('achievementYear'),
-        status: document.getElementById('status')
-      };
-      
-      // ===== UTILITY FUNCTIONS =====
-      function showStatus(message, type) {
-        elements.status.textContent = message;
-        elements.status.className = `status ${type}`;
-        elements.status.style.display = 'block';
+    // Canvas config from detailed analysis
+    const TEMPLATE_URL = "assets/new-template.png";
+    const CANVAS_WIDTH = 1527, CANVAS_HEIGHT = 1080;
+
+    // Font settings derived from reference:
+    const NAME_FONT = "italic bold 38px 'Times New Roman', serif";
+    const DATE_FONT = "italic bold 44px 'Times New Roman', serif";
+    const FONT_COLOR = "#004d99";
+
+    // Placement
+    // Name/number: visually one line below "This is to certify that", centered
+    // Date: one line after "during", left-aligned to right after "during"
+    // The word "during" is already on template, so start slightly right of its anchor
+
+    // Estimated positions, visually measured vs template (X/Y)
+    const NAME_X = 764, NAME_Y = 437; // Y is lowered to match reference more closely
+    const DATE_X = 645+90, DATE_Y = 616; // X starts at "during" anchor+90px, Y same as original date
+
+    // Initialize year picker
+    (function(){
+      let ysel=document.getElementById('year');
+      const last=new Date().getFullYear();
+      for(let y=last;y>=2020;y--) {
+        let o=document.createElement('option');
+        o.value=o.textContent=y;
+        ysel.appendChild(o);
       }
-      
-      function hideStatus() {
-        elements.status.style.display = 'none';
-      }
-      
-      function sanitizeFileName(name) {
-        return name.replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_');
-      }
-      
-      // ===== INITIALIZATION =====
-      function initializeYearOptions() {
-        const currentYear = new Date().getFullYear();
-        const startYear = 2020;
-        
-        for (let year = currentYear; year >= startYear; year--) {
-          const option = document.createElement('option');
-          option.value = year;
-          option.textContent = year;
-          elements.yearSelect.appendChild(option);
-        }
-      }
-      
-      // ===== CERTIFICATE GENERATION =====
-      async function loadTemplate() {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = () => resolve(img);
-          img.onerror = () => reject(new Error('Failed to load certificate template.'));
-          img.src = CONFIG.TEMPLATE_URL;
-        });
-      }
-      
-      function createCertificateCanvas(templateImage, nameText, dateText) {
-        const canvas = document.createElement('canvas');
-        canvas.width = CONFIG.CANVAS_WIDTH;
-        canvas.height = CONFIG.CANVAS_HEIGHT;
-        
-        const ctx = canvas.getContext('2d');
-        
-        // Draw template
-        ctx.drawImage(templateImage, 0, 0, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT);
-        
-        // Configure text rendering
-        ctx.fillStyle = CONFIG.COLORS.TEXT;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        
-        // Draw name - LOWER position
-        ctx.font = CONFIG.FONTS.NAME;
-        ctx.fillText(nameText, CONFIG.POSITIONS.NAME.x, CONFIG.POSITIONS.NAME.y);
-        
-        // Draw date - RIGHT position with BIGGER font
-        ctx.font = CONFIG.FONTS.DATE;
-        ctx.fillText(dateText, CONFIG.POSITIONS.DATE.x, CONFIG.POSITIONS.DATE.y);
-        
-        return canvas;
-      }
-      
-      function downloadCertificate(canvas, filename) {
-        const link = document.createElement('a');
-        link.download = filename;
-        link.href = canvas.toDataURL('image/png', 1.0);
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-      
-      // ===== MAIN GENERATION FUNCTION =====
-      async function generateCertificate(formData) {
-        try {
-          showStatus('Loading template...', 'loading');
-          
-          const templateImage = await loadTemplate();
-          
-          showStatus('Processing information...', 'loading');
-          
-          const nameText = `${formData.name.toUpperCase()} (${formData.id})`;
-          const dateText = `${formData.month}, ${formData.year}`;
-          
-          showStatus('Generating certificate...', 'loading');
-          
-          const canvas = createCertificateCanvas(templateImage, nameText, dateText);
-          
-          const filename = `DXN-StarAgent-${sanitizeFileName(formData.name)}-${formData.month}-${formData.year}.png`;
-          
-          showStatus('Downloading...', 'loading');
-          
-          downloadCertificate(canvas, filename);
-          
-          showStatus('✅ Certificate generated successfully!', 'success');
-          
-          setTimeout(() => {
-            elements.form.reset();
-            hideStatus();
-          }, 4000);
-          
-        } catch (error) {
-          console.error('Certificate generation failed:', error);
-          showStatus(`❌ Error: ${error.message}`, 'error');
-        }
-      }
-      
-      // ===== EVENT HANDLERS =====
-      elements.form.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        
-        const formData = {
-          name: elements.nameInput.value.trim(),
-          id: elements.idInput.value.trim(),
-          month: elements.monthSelect.value,
-          year: elements.yearSelect.value
-        };
-        
-        if (!formData.name || !formData.id || !formData.month || !formData.year) {
-          showStatus('Please fill in all fields.', 'error');
-          return;
-        }
-        
-        await generateCertificate(formData);
-      });
-      
-      // ===== INITIALIZATION =====
-      document.addEventListener('DOMContentLoaded', function() {
-        initializeYearOptions();
-        hideStatus();
-      });
-      
     })();
+
+    // Form logic
+    document.getElementById('certForm').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const show = (msg, cls) => {
+        let div = document.getElementById('status');
+        div.textContent=msg; div.className="status "+cls; div.style.display='block';
+      }
+      const name = document.getElementById('name').value.trim();
+      const number = document.getElementById('number').value.trim();
+      const month = document.getElementById('month').value;
+      const year = document.getElementById('year').value;
+      if(!name || !number || !month || !year) {
+        show("Please fill all fields.","error"); return;
+      }
+      show("Loading template...","loading");
+      // load template
+      let img=new Image();
+      img.src=TEMPLATE_URL;
+      await new Promise((res,rej)=>{img.onload=res; img.onerror=rej;});
+      show("Drawing certificate...","loading");
+      // Draw and render
+      let canvas=document.createElement('canvas');
+      canvas.width=CANVAS_WIDTH; canvas.height=CANVAS_HEIGHT;
+      let ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+
+      // Name line
+      ctx.font=NAME_FONT;
+      ctx.fillStyle=FONT_COLOR;
+      ctx.textAlign="center";
+      ctx.textBaseline="middle";
+      ctx.fillText(`${name.toUpperCase()} (${number})`, NAME_X, NAME_Y);
+
+      // Month/year after "during"
+      ctx.font=DATE_FONT;
+      ctx.textAlign="left";
+      ctx.fillText(`${month}, ${year}`, DATE_X, DATE_Y);
+
+      show("Preparing download...","loading");
+      // Download
+      let link=document.createElement('a');
+      link.download=`DXN_Certificate_${name.replace(/[^a-z0-9]/gi,'_')}_${month}_${year}.png`;
+      link.href=canvas.toDataURL('image/png');
+      link.click();
+      show("✅ Certificate downloaded!","success");
+      setTimeout(()=>{document.getElementById('status').style.display='none';},3500);
+      e.target.reset();
+    });
   </script>
 </body>
 </html>
