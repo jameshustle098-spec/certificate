@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DXN Star Agent Certificate Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .container { max-width: 650px; width: 100%; margin: 20px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    h1 { margin: 0; padding: 25px; background: #306bdf; color: #fff; text-align: center; border-radius: 12px 12px 0 0; font-size: 24px; }
+    .content { padding: 25px; }
+    label { display: block; margin-top: 15px; font-weight: 600; color: #333; }
+    input, select, button { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+    button { background: #059669; color: #fff; border: none; cursor: pointer; margin-top: 25px; font-weight: bold; transition: background-color 0.2s; }
+    button:hover { background: #047857; }
+    #status { text-align: center; padding: 15px; margin-top: 15px; color: #555; display: none; border-radius: 8px; background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>DXN Star Agent Certificate (PNG)</h1>
+  <div class="content">
+    <form id="pngForm">
+      <label for="distributorName">Distributor Name</label>
+      <input type="text" id="distributorName" required placeholder="e.g. ANSHU VERMA">
+      
+      <label for="distributorId">Distributor ID</label>
+      <input type="text" id="distributorId" required placeholder="e.g. 991958412">
+      
+      <label for="achievementMonth">Achievement Month & Year</label>
+      <div style="display:flex; gap:10px;">
+        <select id="achievementMonth" required style="flex:1;">
+          <option value="">Month</option>
+          <option>January</option><option>February</option><option>March</option>
+          <option>April</option><option>May</option><option>June</option>
+          <option>July</option><option>August</option><option>September</option>
+          <option>October</option><option>November</option><option>December</option>
+        </select>
+        <select id="achievementYear" required style="flex:1;"></select>
+      </div>
+      <button type="submit">Generate PNG Certificate</button>
+    </form>
+    <div id="status"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // --- CONFIGURATION ---
+  // Your Google Drive File ID for the high-quality template
+  const TEMPLATE_ID = '1yusQPZ1ujoTb8qj16r8awd2wleB-6W_P';
+  
+  // This is the correct URL format for direct downloads
+  const IMG_URL = `https://drive.google.com/uc?export=download&id=${TEMPLATE_ID}`;
+
+  // Canvas and Text Settings
+  const W = 842, H = 595;
+  const NAME_POS = { x: 421, y: 315 }, DATE_POS = { x: 421, y: 245 };
+  const NAME_FONT = 'bold 22pt Arial', DATE_FONT = 'normal 17pt Arial';
+  const TEXT_COLOR = '#000';
+
+  // --- APPLICATION LOGIC ---
+  const ys = document.getElementById('achievementYear');
+  for(let y = new Date().getFullYear(); y >= 2020; y--){
+    const o = document.createElement('option'); o.value = o.textContent = y; ys.appendChild(o);
+  }
+
+  const statusEl = document.getElementById('status');
+  function showStatus(msg){ statusEl.style.display = 'block'; statusEl.textContent = msg; }
+  function hideStatus(){ statusEl.style.display = 'none'; }
+
+  document.getElementById('pngForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    showStatus('Step 1: Fetching high-quality template from Google Drive...');
+
+    const name = document.getElementById('distributorName').value.trim();
+    const id = document.getElementById('distributorId').value.trim();
+    const month = document.getElementById('achievementMonth').value;
+    const year = document.getElementById('achievementYear').value;
+    const nameTxt = `${name} (${id})`, dateTxt = `${month}, ${year}`;
+
+    try {
+      // Load image directly from the URL
+      const img = new Image();
+      img.crossOrigin = "anonymous"; // Necessary for loading from another domain (Google Drive)
+      img.src = IMG_URL;
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = () => reject('Failed to load template image. Please check the Google Drive link and sharing settings.');
+      });
+      
+      showStatus('Step 2: Drawing template...');
+      const canvas = document.createElement('canvas');
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, W, H);
+
+      showStatus('Step 3: Adding personalized text...');
+      ctx.fillStyle = TEXT_COLOR; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.font = NAME_FONT; ctx.fillText(nameTxt, NAME_POS.x, H - NAME_POS.y);
+      ctx.font = DATE_FONT; ctx.fillText(dateTxt, DATE_POS.x, H - DATE_POS.y);
+
+      showStatus('Step 4: Creating and downloading your PNG...');
+      const link = document.createElement('a');
+      link.download = `DXN-StarAgent_${name.replace(/\s+/g,'_')}_${month}_${year}.png`;
+      link.href = canvas.toDataURL('image/png'); // Creates PNG without quality loss[8]
+      link.click();
+
+      showStatus('Success! Your certificate has been downloaded.');
+      setTimeout(hideStatus, 4000);
+      e.target.reset();
+
+    } catch(err) {
+      showStatus('Error: ' + err);
+      console.error(err);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
