@@ -226,16 +226,16 @@
     (function() {
       'use strict';
       
-      // ===== CORRECTED CERTIFICATE CONFIGURATION =====
+      // ===== PRECISELY CORRECTED CONFIGURATION =====
       const CONFIG = {
         TEMPLATE_URL: 'assets/new-template.png',
         CANVAS_WIDTH: 1527,
         CANVAS_HEIGHT: 1080,
         
-        // CORRECTED POSITIONS - Based on your reference certificate
+        // EXACT POSITIONS - Based on detailed analysis of reference vs generated
         POSITIONS: {
-          NAME: { x: 763, y: 450 },    // MOVED DOWN to the correct blank space
-          DATE: { x: 763, y: 590 }     // MOVED DOWN to after "during"
+          NAME: { x: 763, y: 420 },    // MOVED UP from 450 to 420 - higher in the blank space
+          DATE: { x: 763, y: 630 }     // MOVED DOWN from 590 to 630 - lower after "during"
         },
         
         FONTS: {
@@ -311,11 +311,11 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
-        // Draw name in the CORRECT position
+        // Draw name in the CORRECT UPPER position
         ctx.font = CONFIG.FONTS.NAME;
         ctx.fillText(nameText, CONFIG.POSITIONS.NAME.x, CONFIG.POSITIONS.NAME.y);
         
-        // Draw date in the CORRECT position
+        // Draw date in the CORRECT LOWER position (WITHOUT "during" since template has it)
         ctx.font = CONFIG.FONTS.DATE;
         ctx.fillText(dateText, CONFIG.POSITIONS.DATE.x, CONFIG.POSITIONS.DATE.y);
         
@@ -341,8 +341,11 @@
           
           showStatus('Processing information...', 'loading');
           
+          // FIXED: Name text with proper formatting
           const nameText = `${formData.name.toUpperCase()} (${formData.id})`;
-          const dateText = `during ${formData.month}, ${formData.year}`;
+          
+          // FIXED: Date text WITHOUT "during" since template already has it
+          const dateText = `${formData.month}, ${formData.year}`;
           
           showStatus('Generating certificate...', 'loading');
           
