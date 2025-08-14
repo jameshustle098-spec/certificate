@@ -125,16 +125,20 @@
   // --- CONFIGURATION ---
   const IMG_URL = 'assets/new-template.png';
 
-  // Canvas and Text Settings
-  const W = 1800, H = 1270;
-  const NAME_POS = { x: 1090, y: 1065 }, DATE_POS = { x: 1123, y: 860 };
+  // **UPDATED** Canvas dimensions to match your high-quality template image
+  const W = 1527; // Canvas Width in pixels
+  const H = 1080; // Canvas Height in pixels
+
+  // **UPDATED** Text positions extracted directly from your template
+  const NAME_POS = { x: 764, y: 505 };
+  const DATE_POS = { x: 764, y: 675 };
   
-  // **MERGED FONT AND COLOR STYLES**
-  const NAME_FONT = "bold 52pt 'Arial Black', sans-serif";
-  const NAME_COLOR = '#004d99'; // Dark Blue
+  // Font and color styles merged from your request
+  const NAME_FONT = "900 60px 'Arial Black', sans-serif";
+  const NAME_COLOR = '#004d99';
   
-  const DATE_FONT = "italic 36pt 'Times New Roman', serif";
-  const DATE_COLOR = '#333333'; // Dark Gray
+  const DATE_FONT = "italic 40px 'Times New Roman', serif";
+  const DATE_COLOR = '#4b4b4b';
 
   // --- APPLICATION LOGIC ---
   const ys = document.getElementById('achievementYear');
@@ -158,7 +162,6 @@
     const id = document.getElementById('distributorId').value.trim();
     const month = document.getElementById('achievementMonth').value;
     const year = document.getElementById('achievementYear').value;
-    // Text is converted to uppercase per your style request
     const nameTxt = `${name.toUpperCase()} (${id})`, dateTxt = `${month}, ${year}`;
 
     try {
@@ -175,16 +178,13 @@
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, W, H);
 
-      // Apply styles
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       
-      // Draw Name with new styles
       ctx.font = NAME_FONT;
       ctx.fillStyle = NAME_COLOR;
       ctx.fillText(nameTxt, NAME_POS.x, NAME_POS.y);
       
-      // Draw Date with new styles
       ctx.font = DATE_FONT;
       ctx.fillStyle = DATE_COLOR;
       ctx.fillText(dateTxt, DATE_POS.x, DATE_POS.y);
