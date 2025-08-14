@@ -106,14 +106,14 @@
     const TEMPLATE_URL = "assets/new-template.png";
     const CANVAS_WIDTH = 1527, CANVAS_HEIGHT = 1080;
 
-    // CORRECTED Font settings to match reference:
-    const NAME_FONT = "italic bold 44px 'Times New Roman', serif";  // INCREASED from 38px to 44px
+    // Font settings (keeping as they are - correct size and color)
+    const NAME_FONT = "italic bold 44px 'Times New Roman', serif";
     const DATE_FONT = "italic bold 44px 'Times New Roman', serif";
     const FONT_COLOR = "#004d99";
 
-    // FINE-TUNED positions:
+    // Positions - CORRECTED date X position to match reference
     const NAME_X = 764, NAME_Y = 437;
-    const DATE_X = 730, DATE_Y = 616;  // ADJUSTED X position slightly left for better alignment
+    const DATE_X = 668, DATE_Y = 616;  // MOVED LEFT from 730 to 668 to align with "during"
 
     // Initialize year picker
     (function(){
@@ -154,14 +154,14 @@
       let ctx=canvas.getContext('2d');
       ctx.drawImage(img,0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 
-      // Name line - BIGGER font to match reference
+      // Name line
       ctx.font=NAME_FONT;
       ctx.fillStyle=FONT_COLOR;
       ctx.textAlign="center";
       ctx.textBaseline="middle";
       ctx.fillText(`${name.toUpperCase()} (${number})`, NAME_X, NAME_Y);
 
-      // Month/year - ADJUSTED position
+      // Month/year - CORRECTED position to align with reference
       ctx.font=DATE_FONT;
       ctx.textAlign="left";
       ctx.fillText(`${month}, ${year}`, DATE_X, DATE_Y);
