@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DXN Star Agent Certificate Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,47 +14,47 @@
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0; padding: 0;
-      display: flex; justify-content: center; align-items: center;
-      min-height: 100vh;
-      background: #f0f2f5;
-      font-family: 'Lato', sans-serif;
+      margin:0; padding:0;
+      display:flex;justify-content:center;align-items:center;
+      min-height:100vh;background:#f0f2f5;
+      font-family:'Lato',sans-serif;
     }
     .container {
-      width: 550px; background: white; border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;
+      width:550px;background:#fff;border-radius:10px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      overflow:hidden;
     }
     header {
-      background: var(--dxn-blue); color: white; text-align: center;
-      padding: 20px;
+      background:var(--dxn-blue);color:#fff;text-align:center;
+      padding:20px;
     }
-    header h1 { margin: 0; font-size: 24px; }
-    header p { margin: 5px 0 0; font-size: 14px; opacity: .8; }
-    .content { padding: 20px; }
-    .form-group { margin-bottom: 15px; }
+    header h1 {margin:0;font-size:24px;}
+    header p {margin:5px 0 0;font-size:14px;opacity:.8;}
+    .content {padding:20px;}
+    .form-group {margin-bottom:15px;}
     label {
-      display: block; margin-bottom: 5px;
-      font-weight: bold; color: var(--dark-gray); font-size: 14px;
+      display:block;margin-bottom:5px;
+      font-weight:700;color:var(--dark-gray);font-size:14px;
     }
-    input, select {
-      width: 100%; padding: 10px; font-size: 14px;
-      border: 1px solid #ccc; border-radius: 6px;
+    input,select {
+      width:100%;padding:10px;font-size:14px;
+      border:1px solid #ccc;border-radius:6px;
     }
-    .form-row { display: flex; gap: 10px; }
-    .form-row .form-group { flex: 1; }
+    .form-row {display:flex;gap:10px;}
+    .form-row .form-group {flex:1;}
     button {
-      width: 100%; padding: 12px; background: var(--dxn-blue);
-      color: white; border: none; border-radius: 6px;
-      font-size: 16px; cursor: pointer; margin-top: 10px;
+      width:100%;padding:12px;background:var(--dxn-blue);
+      color:#fff;border:none;border-radius:6px;
+      font-size:16px;cursor:pointer;margin-top:10px;
     }
-    button:hover { background: #003d7a; }
+    button:hover {background:#003d7a;}
     #status {
-      margin-top: 15px; padding: 10px; text-align: center;
-      display: none; font-weight: bold; border-radius: 6px;
+      display:none;margin-top:15px;padding:10px;
+      text-align:center;font-weight:700;border-radius:6px;
     }
-    .loading { background: #e3f2fd; color: var(--dxn-blue); }
-    .success { background: #e8f5e9; color: #2e7d32; }
-    .error   { background: #ffebee; color: #c62828; }
+    .loading {background:#e3f2fd;color:var(--dxn-blue);}
+    .success {background:#e8f5e9;color:#2e7d32;}
+    .error   {background:#ffebee;color:#c62828;}
   </style>
 </head>
 <body>
@@ -94,74 +94,50 @@
       <div id="status"></div>
     </div>
   </div>
-
   <script>
   (function(){
     const IMG_URL = 'assets/new-template.png';
     const CANVAS_W = 1527, CANVAS_H = 1080;
-    // Converted positions: 1cm ≈ 37.8px
-    const NAME_POS = { x: 8.98 * 37.8, y: 7.95 * 37.8 };
-    const DATE_POS = { x: 13.39 * 37.8, y: 11.76 * 37.8 };
-
+    // 1 cm ≈ 37.8 px
+    const NAME_POS = { x:8.73*37.8, y:7.95*37.8 };
+    const DATE_POS = { x:13.39*37.8, y:11.76*37.8 };
     const FONT = "italic bold 32px 'Times New Roman', serif";
-    const NAME_COLOR = '#004d99';
-    const DATE_COLOR = '#004d99';
-
-    const yearSelect = document.getElementById('achievementYear');
-    for(let y=new Date().getFullYear(); y>=2020; y--){
-      const opt = document.createElement('option');
-      opt.value = opt.textContent = y;
-      yearSelect.appendChild(opt);
+    const NAME_COLOR = '#004d99', DATE_COLOR = '#004d99';
+    const yr = document.getElementById('achievementYear');
+    for(let y=new Date().getFullYear();y>=2020;y--){
+      let o=document.createElement('option');
+      o.value=o.textContent=y; yr.appendChild(o);
     }
-
-    const statusEl = document.getElementById('status');
-    function show(msg,type){
-      statusEl.textContent = msg;
-      statusEl.className = type;
-      statusEl.style.display = 'block';
-    }
-
-    document.getElementById('pngForm').addEventListener('submit', async e =>{
-      e.preventDefault();
-      show('Loading template…','loading');
-
-      const name = document.getElementById('distributorName').value.trim().toUpperCase();
-      const id   = document.getElementById('distributorId').value.trim();
-      const month= document.getElementById('achievementMonth').value;
-      const year = document.getElementById('achievementYear').value;
-      const textName = `${name} (${id})`;
-      const textDate = `during ${month}, ${year}`;
-
-      try {
-        const img = new Image();
-        img.src = IMG_URL;
-        await new Promise((res,rej)=>{
-          img.onload=res; img.onerror=()=>rej('Image load failed');
-        });
+    const st = document.getElementById('status');
+    function show(m,t){ st.textContent=m; st.className=t; st.style.display='block'; }
+    document.getElementById('pngForm').addEventListener('submit',async e=>{
+      e.preventDefault(); show('Loading…','loading');
+      const n=document.getElementById('distributorName').value.trim().toUpperCase(),
+            i=document.getElementById('distributorId').value.trim(),
+            m=document.getElementById('achievementMonth').value,
+            y=document.getElementById('achievementYear').value,
+            tn=`${n} (${i})`, td=`during ${m}, ${y}`;
+      try{
+        let img=new Image();
+        img.src=IMG_URL;
+        await new Promise((res,rej)=>{img.onload=res; img.onerror=()=>rej();});
         show('Drawing…','loading');
-
-        const canvas = document.createElement('canvas');
-        canvas.width  = CANVAS_W; canvas.height = CANVAS_H;
-        const ctx = canvas.getContext('2d');
+        let c=document.createElement('canvas');
+        c.width=CANVAS_W; c.height=CANVAS_H;
+        let ctx=c.getContext('2d');
         ctx.drawImage(img,0,0,CANVAS_W,CANVAS_H);
-
-        ctx.font = FONT;
-        ctx.fillStyle = NAME_COLOR;
-        ctx.textBaseline = 'alphabetic';
-        ctx.fillText(textName, NAME_POS.x, NAME_POS.y);
-
-        ctx.fillStyle = DATE_COLOR;
-        ctx.fillText(textDate, DATE_POS.x, DATE_POS.y);
-
+        ctx.textAlign='left'; ctx.textBaseline='top';
+        ctx.font=FONT; ctx.fillStyle=NAME_COLOR;
+        ctx.fillText(tn,NAME_POS.x,NAME_POS.y);
+        ctx.fillStyle=DATE_COLOR; ctx.fillText(td,DATE_POS.x,DATE_POS.y);
         show('Generating PNG…','loading');
-        const link = document.createElement('a');
-        link.download = `DXN-StarAgent_${name.replace(/\\s+/g,'_')}_${month}_${year}.png`;
-        link.href = canvas.toDataURL('image/png');
+        let link=document.createElement('a');
+        link.download=`DXN-${n}_${m}_${y}.png`;
+        link.href=c.toDataURL('image/png');
         link.click();
-
-        show('Success! Download started.','success');
-      } catch(err){
-        show('Error: '+err,'error');
+        show('Done!','success');
+      }catch{
+        show('Error loading template','error');
       }
     });
   })();
