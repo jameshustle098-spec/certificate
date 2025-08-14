@@ -232,15 +232,16 @@
         CANVAS_WIDTH: 1527,
         CANVAS_HEIGHT: 1080,
         
-        // EXACT POSITIONS - Based on detailed analysis of reference vs generated
+        // CORRECTED POSITIONS - Based on detailed comparison
         POSITIONS: {
-          NAME: { x: 763, y: 420 },    // MOVED UP from 450 to 420 - higher in the blank space
-          DATE: { x: 763, y: 630 }     // MOVED DOWN from 590 to 630 - lower after "during"
+          NAME: { x: 763, y: 440 },    // MOVED DOWN from 420 to 440 - lower in blank space
+          DATE: { x: 820, y: 630 }     // MOVED RIGHT from 763 to 820 - positioned more right
         },
         
+        // CORRECTED FONT SIZES - Based on reference analysis
         FONTS: {
-          NAME: "italic bold 48px 'Times New Roman', serif",
-          DATE: "italic bold 36px 'Times New Roman', serif"
+          NAME: "italic bold 48px 'Times New Roman', serif",   // Keep name font same
+          DATE: "italic bold 42px 'Times New Roman', serif"    // INCREASED from 36px to 42px
         },
         
         COLORS: {
@@ -311,11 +312,11 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
-        // Draw name in the CORRECT UPPER position
+        // Draw name - LOWER position
         ctx.font = CONFIG.FONTS.NAME;
         ctx.fillText(nameText, CONFIG.POSITIONS.NAME.x, CONFIG.POSITIONS.NAME.y);
         
-        // Draw date in the CORRECT LOWER position (WITHOUT "during" since template has it)
+        // Draw date - RIGHT position with BIGGER font
         ctx.font = CONFIG.FONTS.DATE;
         ctx.fillText(dateText, CONFIG.POSITIONS.DATE.x, CONFIG.POSITIONS.DATE.y);
         
@@ -341,10 +342,7 @@
           
           showStatus('Processing information...', 'loading');
           
-          // FIXED: Name text with proper formatting
           const nameText = `${formData.name.toUpperCase()} (${formData.id})`;
-          
-          // FIXED: Date text WITHOUT "during" since template already has it
           const dateText = `${formData.month}, ${formData.year}`;
           
           showStatus('Generating certificate...', 'loading');
