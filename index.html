@@ -47,7 +47,7 @@
 <script>
 (function(){
   // --- CONFIGURATION ---
-  // Your Google Drive File ID for the high-quality template
+  // Your Google Drive File ID has been updated here
   const TEMPLATE_ID = '1yusQPZ1ujoTb8qj16r8awd2wleB-6W_P';
   
   // This is the correct URL format for direct downloads
@@ -86,7 +86,7 @@
       img.src = IMG_URL;
       await new Promise((resolve, reject) => {
         img.onload = resolve;
-        img.onerror = () => reject('Failed to load template image. Please check the Google Drive link and sharing settings.');
+        img.onerror = () => reject('Failed to load template image. Please check that the Google Drive link is public.');
       });
       
       showStatus('Step 2: Drawing template...');
@@ -103,7 +103,7 @@
       showStatus('Step 4: Creating and downloading your PNG...');
       const link = document.createElement('a');
       link.download = `DXN-StarAgent_${name.replace(/\s+/g,'_')}_${month}_${year}.png`;
-      link.href = canvas.toDataURL('image/png'); // Creates PNG without quality loss[8]
+      link.href = canvas.toDataURL('image/png');
       link.click();
 
       showStatus('Success! Your certificate has been downloaded.');
@@ -120,3 +120,4 @@
 
 </body>
 </html>
+
