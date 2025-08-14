@@ -2,210 +2,169 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DXN Star Agent Certificate Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --dxn-blue: #004d99;
-      --success-green: #10b981;
-      --light-gray: #f8f9fa;
       --dark-gray: #343a40;
     }
     * { box-sizing: border-box; }
     body {
-      font-family: 'Lato', sans-serif;
-      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      margin: 0; padding: 0;
       display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; margin: 0; padding: 20px;
+      min-height: 100vh;
+      background: #f0f2f5;
+      font-family: 'Lato', sans-serif;
     }
     .container {
-      max-width: 550px; width: 100%;
-      background: #ffffff; border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
+      width: 550px; background: white; border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;
     }
-    .header {
-      background: var(--dxn-blue); padding: 30px;
-      text-align: center; color: white;
+    header {
+      background: var(--dxn-blue); color: white; text-align: center;
+      padding: 20px;
     }
-    .header h1 {
-      margin: 0; font-family: 'Poppins', sans-serif;
-      font-size: 26px; font-weight: 700;
-    }
-    .header p { margin: 5px 0 0; font-size: 14px; opacity: 0.8; }
-    .content { padding: 30px 40px; }
-    .form-group { margin-bottom: 20px; }
+    header h1 { margin: 0; font-size: 24px; }
+    header p { margin: 5px 0 0; font-size: 14px; opacity: .8; }
+    .content { padding: 20px; }
+    .form-group { margin-bottom: 15px; }
     label {
-      display: block; margin-bottom: 8px; font-weight: 700;
-      color: var(--dark-gray); font-size: 14px;
+      display: block; margin-bottom: 5px;
+      font-weight: bold; color: var(--dark-gray); font-size: 14px;
     }
     input, select {
-      width: 100%; padding: 12px 15px;
-      border: 2px solid #e9ecef; border-radius: 10px;
-      font-size: 16px; font-family: 'Lato', sans-serif;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%; padding: 10px; font-size: 14px;
+      border: 1px solid #ccc; border-radius: 6px;
     }
-    input:focus, select:focus {
-      outline: none; border-color: var(--dxn-blue);
-      box-shadow: 0 0 0 3px rgba(0, 77, 153, 0.15);
-    }
-    .form-row { display: flex; gap: 15px; }
+    .form-row { display: flex; gap: 10px; }
     .form-row .form-group { flex: 1; }
-    .generate-btn {
-      width: 100%; padding: 15px;
-      background: linear-gradient(90deg, var(--dxn-blue), #1e88e5);
-      color: #fff; border: none; border-radius: 10px;
-      font-size: 18px; font-family: 'Poppins', sans-serif; font-weight: 600;
-      cursor: pointer; margin-top: 15px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: flex; justify-content: center; align-items: center; gap: 10px;
+    button {
+      width: 100%; padding: 12px; background: var(--dxn-blue);
+      color: white; border: none; border-radius: 6px;
+      font-size: 16px; cursor: pointer; margin-top: 10px;
     }
-    .generate-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 77, 153, 0.25);
-    }
+    button:hover { background: #003d7a; }
     #status {
-      text-align: center; padding: 15px; margin-top: 20px;
-      font-weight: 600; display: none; border-radius: 10px;
-      animation: fadeIn 0.3s;
+      margin-top: 15px; padding: 10px; text-align: center;
+      display: none; font-weight: bold; border-radius: 6px;
     }
-    .status-loading { background-color: #e3f2fd; color: var(--dxn-blue); }
-    .status-success { background-color: #e8f5e9; color: #2e7d32; }
-    .status-error { background-color: #ffebee; color: #c62828; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .loading { background: #e3f2fd; color: var(--dxn-blue); }
+    .success { background: #e8f5e9; color: #2e7d32; }
+    .error   { background: #ffebee; color: #c62828; }
   </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="header">
-    <h1>DXN Certificate Generator</h1>
-    <p>Create and download your Star Agent certificate</p>
-  </div>
-  <div class="content">
-    <form id="pngForm">
-      <div class="form-group">
-        <label for="distributorName">Distributor Name</label>
-        <input type="text" id="distributorName" required placeholder="e.g. ANSHU VERMA">
-      </div>
-      <div class="form-group">
-        <label for="distributorId">Distributor ID</label>
-        <input type="text" id="distributorId" required placeholder="e.g. 991958412">
-      </div>
-      <div class="form-row">
+  <div class="container">
+    <header>
+      <h1>DXN Certificate Generator</h1>
+      <p>Create and download your Star Agent certificate</p>
+    </header>
+    <div class="content">
+      <form id="pngForm">
         <div class="form-group">
-          <label for="achievementMonth">Achievement Month</label>
-          <select id="achievementMonth" required>
-            <option value="">Select Month</option>
-            <option>January</option><option>February</option><option>March</option>
-            <option>April</option><option>May</option><option>June</option>
-            <option>July</option><option>August</option><option>September</option>
-            <option>October</option><option>November</option><option>December</option>
-          </select>
+          <label for="distributorName">Distributor Name</label>
+          <input type="text" id="distributorName" placeholder="e.g. ANSHU VERMA" required>
         </div>
         <div class="form-group">
-          <label for="achievementYear">Year</label>
-          <select id="achievementYear" required></select>
+          <label for="distributorId">Distributor ID</label>
+          <input type="text" id="distributorId" placeholder="e.g. 991958412" required>
         </div>
-      </div>
-      <button type="submit" class="generate-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
-        <span>Generate Certificate</span>
-      </button>
-    </form>
-    <div id="status"></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="achievementMonth">Month</label>
+            <select id="achievementMonth" required>
+              <option value="">Select Month</option>
+              <option>January</option><option>February</option><option>March</option>
+              <option>April</option><option>May</option><option>June</option>
+              <option>July</option><option>August</option><option>September</option>
+              <option>October</option><option>November</option><option>December</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="achievementYear">Year</label>
+            <select id="achievementYear" required></select>
+          </div>
+        </div>
+        <button type="submit">Generate Certificate</button>
+      </form>
+      <div id="status"></div>
+    </div>
   </div>
-</div>
 
-<script>
-(function(){
-  // --- CONFIGURATION ---
-  const IMG_URL = 'assets/new-template.png';
+  <script>
+  (function(){
+    const IMG_URL = 'assets/new-template.png';
+    const CANVAS_W = 1527, CANVAS_H = 1080;
+    // Converted positions: 1cm ≈ 37.8px
+    const NAME_POS = { x: 8.98 * 37.8, y: 7.95 * 37.8 };
+    const DATE_POS = { x: 13.39 * 37.8, y: 11.76 * 37.8 };
 
-  // Canvas dimensions based on your template image
-  const W = 1527;
-  const H = 1080;
+    const FONT = "italic bold 32px 'Times New Roman', serif";
+    const NAME_COLOR = '#004d99';
+    const DATE_COLOR = '#004d99';
 
-  // **FINAL, CORRECTED TEXT POSITIONS**
-  const NAME_POS = { x: 764, y: 500 }; // Moved up to the correct spot
-  const DATE_POS = { x: 764, y: 650 }; // Moved up to the correct spot
-  
-  // Font and color styles
-  const NAME_FONT = "900 60px 'Arial Black', sans-serif";
-  const NAME_COLOR = '#004d99';
-  
-  const DATE_FONT = "italic 40px 'Times New Roman', serif";
-  const DATE_COLOR = '#4b4b4b';
-
-  // --- APPLICATION LOGIC ---
-  const ys = document.getElementById('achievementYear');
-  for(let y = new Date().getFullYear(); y >= 2020; y--){
-    const o = document.createElement('option'); o.value = o.textContent = y; ys.appendChild(o);
-  }
-
-  const statusEl = document.getElementById('status');
-  function showStatus(msg, type = 'loading'){
-    statusEl.style.display = 'block';
-    statusEl.textContent = msg;
-    statusEl.className = `status-${type}`;
-  }
-  function hideStatus(){ statusEl.style.display = 'none'; }
-
-  document.getElementById('pngForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    showStatus('Loading template from repository...', 'loading');
-
-    const name = document.getElementById('distributorName').value.trim();
-    const id = document.getElementById('distributorId').value.trim();
-    const month = document.getElementById('achievementMonth').value;
-    const year = document.getElementById('achievementYear').value;
-    const nameTxt = `${name.toUpperCase()} (${id})`, dateTxt = `during ${month}, ${year}`;
-
-    try {
-      const img = new Image();
-      img.src = IMG_URL;
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = () => reject('Failed to load template. Check "assets" folder.');
-      });
-      
-      showStatus('Drawing your details onto the template...', 'loading');
-      const canvas = document.createElement('canvas');
-      canvas.width = W; canvas.height = H;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, W, H);
-
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      
-      ctx.font = NAME_FONT;
-      ctx.fillStyle = NAME_COLOR;
-      ctx.fillText(nameTxt, NAME_POS.x, NAME_POS.y);
-      
-      ctx.font = DATE_FONT;
-      ctx.fillStyle = DATE_COLOR;
-      ctx.fillText(dateTxt, DATE_POS.x, DATE_POS.y);
-
-      showStatus('Creating and downloading your certificate...', 'loading');
-      const link = document.createElement('a');
-      link.download = `DXN-StarAgent_${name.replace(/\s+/g,'_')}_${month}_${year}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-
-      showStatus('Success! Certificate downloaded.', 'success');
-      setTimeout(hideStatus, 4000);
-      e.target.reset();
-
-    } catch(err) {
-      showStatus('Error: ' + err.message, 'error');
-      console.error(err);
+    const yearSelect = document.getElementById('achievementYear');
+    for(let y=new Date().getFullYear(); y>=2020; y--){
+      const opt = document.createElement('option');
+      opt.value = opt.textContent = y;
+      yearSelect.appendChild(opt);
     }
-  });
-})();
-</script>
 
+    const statusEl = document.getElementById('status');
+    function show(msg,type){
+      statusEl.textContent = msg;
+      statusEl.className = type;
+      statusEl.style.display = 'block';
+    }
+
+    document.getElementById('pngForm').addEventListener('submit', async e =>{
+      e.preventDefault();
+      show('Loading template…','loading');
+
+      const name = document.getElementById('distributorName').value.trim().toUpperCase();
+      const id   = document.getElementById('distributorId').value.trim();
+      const month= document.getElementById('achievementMonth').value;
+      const year = document.getElementById('achievementYear').value;
+      const textName = `${name} (${id})`;
+      const textDate = `during ${month}, ${year}`;
+
+      try {
+        const img = new Image();
+        img.src = IMG_URL;
+        await new Promise((res,rej)=>{
+          img.onload=res; img.onerror=()=>rej('Image load failed');
+        });
+        show('Drawing…','loading');
+
+        const canvas = document.createElement('canvas');
+        canvas.width  = CANVAS_W; canvas.height = CANVAS_H;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img,0,0,CANVAS_W,CANVAS_H);
+
+        ctx.font = FONT;
+        ctx.fillStyle = NAME_COLOR;
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText(textName, NAME_POS.x, NAME_POS.y);
+
+        ctx.fillStyle = DATE_COLOR;
+        ctx.fillText(textDate, DATE_POS.x, DATE_POS.y);
+
+        show('Generating PNG…','loading');
+        const link = document.createElement('a');
+        link.download = `DXN-StarAgent_${name.replace(/\\s+/g,'_')}_${month}_${year}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        show('Success! Download started.','success');
+      } catch(err){
+        show('Error: '+err,'error');
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
