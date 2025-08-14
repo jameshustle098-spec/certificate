@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DXN Star Agent Certificate Generator</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary-blue: #004d99;
@@ -24,7 +21,7 @@
     }
     
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Arial', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       display: flex;
@@ -53,30 +50,17 @@
       color: white;
       padding: 30px 25px;
       text-align: center;
-      position: relative;
-    }
-    
-    .header::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #ffd700, #ffed4a);
     }
     
     .header h1 {
       font-size: 26px;
       font-weight: 700;
       margin-bottom: 8px;
-      letter-spacing: -0.5px;
     }
     
     .header p {
       opacity: 0.9;
       font-size: 14px;
-      font-weight: 400;
     }
     
     .form-section {
@@ -93,7 +77,6 @@
       color: var(--text-dark);
       margin-bottom: 8px;
       font-size: 14px;
-      letter-spacing: 0.3px;
     }
     
     .form-input, .form-select {
@@ -102,21 +85,13 @@
       border: 2px solid var(--border-color);
       border-radius: 10px;
       font-size: 16px;
-      font-family: inherit;
       transition: all 0.3s ease;
-      background: #fff;
     }
     
     .form-input:focus, .form-select:focus {
       outline: none;
       border-color: var(--primary-blue);
       box-shadow: 0 0 0 3px rgba(0, 77, 153, 0.1);
-      transform: translateY(-1px);
-    }
-    
-    .form-input::placeholder {
-      color: #adb5bd;
-      font-weight: 400;
     }
     
     .form-row {
@@ -136,8 +111,6 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
       margin-top: 10px;
       box-shadow: 0 4px 15px rgba(0, 77, 153, 0.3);
     }
@@ -145,10 +118,6 @@
     .generate-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(0, 77, 153, 0.4);
-    }
-    
-    .generate-btn:active {
-      transform: translateY(0);
     }
     
     .status {
@@ -159,44 +128,30 @@
       font-weight: 600;
       font-size: 14px;
       display: none;
-      animation: fadeIn 0.3s ease;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
     }
     
     .status.loading {
       background: #e3f2fd;
       color: var(--primary-blue);
-      border-left: 4px solid var(--primary-blue);
     }
     
     .status.success {
       background: #d4edda;
       color: var(--success-green);
-      border-left: 4px solid var(--success-green);
     }
     
     .status.error {
       background: #f8d7da;
       color: var(--error-red);
-      border-left: 4px solid var(--error-red);
     }
     
     @media (max-width: 576px) {
-      .container {
-        margin: 10px;
-      }
-      
       .form-section {
         padding: 25px 20px;
       }
       
       .form-row {
         grid-template-columns: 1fr;
-        gap: 20px;
       }
     }
   </style>
@@ -205,7 +160,7 @@
   <div class="container">
     <div class="header">
       <h1>DXN Certificate Generator</h1>
-      <p>Generate professional Star Agent certificates instantly</p>
+      <p>Generate professional Star Agent certificates</p>
     </div>
     
     <div class="form-section">
@@ -216,9 +171,8 @@
             type="text" 
             id="distributorName" 
             class="form-input"
-            placeholder="Enter full name (e.g., ANSHU VERMA)"
+            placeholder="e.g. ANSHU VERMA"
             required
-            autocomplete="name"
           >
         </div>
         
@@ -228,38 +182,34 @@
             type="text" 
             id="distributorId" 
             class="form-input"
-            placeholder="Enter ID number (e.g., 991958412)"
+            placeholder="e.g. 991958412"
             required
-            pattern="[0-9]+"
-            title="Please enter numbers only"
           >
         </div>
         
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label" for="achievementMonth">Achievement Month</label>
+            <label class="form-label" for="achievementMonth">Month</label>
             <select id="achievementMonth" class="form-select" required>
               <option value="">Select Month</option>
-              <option value="January">January</option>
-              <option value="February">February</option>
-              <option value="March">March</option>
-              <option value="April">April</option>
-              <option value="May">May</option>
-              <option value="June">June</option>
-              <option value="July">July</option>
-              <option value="August">August</option>
-              <option value="September">September</option>
-              <option value="October">October</option>
-              <option value="November">November</option>
-              <option value="December">December</option>
+              <option>January</option>
+              <option>February</option>
+              <option>March</option>
+              <option>April</option>
+              <option>May</option>
+              <option>June</option>
+              <option>July</option>
+              <option>August</option>
+              <option>September</option>
+              <option>October</option>
+              <option>November</option>
+              <option>December</option>
             </select>
           </div>
           
           <div class="form-group">
-            <label class="form-label" for="achievementYear">Achievement Year</label>
-            <select id="achievementYear" class="form-select" required>
-              <option value="">Select Year</option>
-            </select>
+            <label class="form-label" for="achievementYear">Year</label>
+            <select id="achievementYear" class="form-select" required></select>
           </div>
         </div>
         
@@ -276,28 +226,25 @@
     (function() {
       'use strict';
       
-      // ===== CERTIFICATE CONFIGURATION =====
+      // ===== CORRECTED CERTIFICATE CONFIGURATION =====
       const CONFIG = {
-        // Template settings
         TEMPLATE_URL: 'assets/new-template.png',
         CANVAS_WIDTH: 1527,
         CANVAS_HEIGHT: 1080,
         
-        // Text positioning (based on detailed image analysis)
+        // CORRECTED POSITIONS - Based on your reference certificate
         POSITIONS: {
-          NAME: { x: 763, y: 370 },    // Centered horizontally, positioned after "This is to certify that"
-          DATE: { x: 763, y: 535 }     // Centered horizontally, positioned after "during"
+          NAME: { x: 763, y: 450 },    // MOVED DOWN to the correct blank space
+          DATE: { x: 763, y: 590 }     // MOVED DOWN to after "during"
         },
         
-        // Typography settings
         FONTS: {
           NAME: "italic bold 48px 'Times New Roman', serif",
           DATE: "italic bold 36px 'Times New Roman', serif"
         },
         
-        // Colors
         COLORS: {
-          TEXT: '#004d99'  // DXN blue color
+          TEXT: '#004d99'
         }
       };
       
@@ -344,7 +291,7 @@
         return new Promise((resolve, reject) => {
           const img = new Image();
           img.onload = () => resolve(img);
-          img.onerror = () => reject(new Error('Failed to load certificate template. Please ensure the template file exists in the assets folder.'));
+          img.onerror = () => reject(new Error('Failed to load certificate template.'));
           img.src = CONFIG.TEMPLATE_URL;
         });
       }
@@ -364,11 +311,11 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
-        // Draw name
+        // Draw name in the CORRECT position
         ctx.font = CONFIG.FONTS.NAME;
         ctx.fillText(nameText, CONFIG.POSITIONS.NAME.x, CONFIG.POSITIONS.NAME.y);
         
-        // Draw date
+        // Draw date in the CORRECT position
         ctx.font = CONFIG.FONTS.DATE;
         ctx.fillText(dateText, CONFIG.POSITIONS.DATE.x, CONFIG.POSITIONS.DATE.y);
         
@@ -380,7 +327,6 @@
         link.download = filename;
         link.href = canvas.toDataURL('image/png', 1.0);
         
-        // Trigger download
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -389,33 +335,27 @@
       // ===== MAIN GENERATION FUNCTION =====
       async function generateCertificate(formData) {
         try {
-          showStatus('Loading certificate template...', 'loading');
+          showStatus('Loading template...', 'loading');
           
-          // Load template image
           const templateImage = await loadTemplate();
           
-          showStatus('Processing your information...', 'loading');
+          showStatus('Processing information...', 'loading');
           
-          // Prepare text content
           const nameText = `${formData.name.toUpperCase()} (${formData.id})`;
           const dateText = `during ${formData.month}, ${formData.year}`;
           
-          showStatus('Generating your certificate...', 'loading');
+          showStatus('Generating certificate...', 'loading');
           
-          // Create certificate
           const canvas = createCertificateCanvas(templateImage, nameText, dateText);
           
-          // Generate filename
           const filename = `DXN-StarAgent-${sanitizeFileName(formData.name)}-${formData.month}-${formData.year}.png`;
           
-          showStatus('Preparing download...', 'loading');
+          showStatus('Downloading...', 'loading');
           
-          // Download certificate
           downloadCertificate(canvas, filename);
           
-          showStatus('✅ Certificate generated successfully! Download started.', 'success');
+          showStatus('✅ Certificate generated successfully!', 'success');
           
-          // Reset form and hide status after delay
           setTimeout(() => {
             elements.form.reset();
             hideStatus();
@@ -438,9 +378,8 @@
           year: elements.yearSelect.value
         };
         
-        // Validate form data
         if (!formData.name || !formData.id || !formData.month || !formData.year) {
-          showStatus('Please fill in all fields before generating the certificate.', 'error');
+          showStatus('Please fill in all fields.', 'error');
           return;
         }
         
