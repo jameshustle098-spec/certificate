@@ -102,23 +102,18 @@
     </form>
   </div>
   <script>
-    // Canvas config from detailed analysis
+    // Canvas config
     const TEMPLATE_URL = "assets/new-template.png";
     const CANVAS_WIDTH = 1527, CANVAS_HEIGHT = 1080;
 
-    // Font settings derived from reference:
-    const NAME_FONT = "italic bold 38px 'Times New Roman', serif";
+    // CORRECTED Font settings to match reference:
+    const NAME_FONT = "italic bold 44px 'Times New Roman', serif";  // INCREASED from 38px to 44px
     const DATE_FONT = "italic bold 44px 'Times New Roman', serif";
     const FONT_COLOR = "#004d99";
 
-    // Placement
-    // Name/number: visually one line below "This is to certify that", centered
-    // Date: one line after "during", left-aligned to right after "during"
-    // The word "during" is already on template, so start slightly right of its anchor
-
-    // Estimated positions, visually measured vs template (X/Y)
-    const NAME_X = 764, NAME_Y = 437; // Y is lowered to match reference more closely
-    const DATE_X = 645+90, DATE_Y = 616; // X starts at "during" anchor+90px, Y same as original date
+    // FINE-TUNED positions:
+    const NAME_X = 764, NAME_Y = 437;
+    const DATE_X = 730, DATE_Y = 616;  // ADJUSTED X position slightly left for better alignment
 
     // Initialize year picker
     (function(){
@@ -146,30 +141,33 @@
         show("Please fill all fields.","error"); return;
       }
       show("Loading template...","loading");
-      // load template
+      
+      // Load template
       let img=new Image();
       img.src=TEMPLATE_URL;
       await new Promise((res,rej)=>{img.onload=res; img.onerror=rej;});
       show("Drawing certificate...","loading");
+      
       // Draw and render
       let canvas=document.createElement('canvas');
       canvas.width=CANVAS_WIDTH; canvas.height=CANVAS_HEIGHT;
       let ctx=canvas.getContext('2d');
       ctx.drawImage(img,0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 
-      // Name line
+      // Name line - BIGGER font to match reference
       ctx.font=NAME_FONT;
       ctx.fillStyle=FONT_COLOR;
       ctx.textAlign="center";
       ctx.textBaseline="middle";
       ctx.fillText(`${name.toUpperCase()} (${number})`, NAME_X, NAME_Y);
 
-      // Month/year after "during"
+      // Month/year - ADJUSTED position
       ctx.font=DATE_FONT;
       ctx.textAlign="left";
       ctx.fillText(`${month}, ${year}`, DATE_X, DATE_Y);
 
       show("Preparing download...","loading");
+      
       // Download
       let link=document.createElement('a');
       link.download=`DXN_Certificate_${name.replace(/[^a-z0-9]/gi,'_')}_${month}_${year}.png`;
