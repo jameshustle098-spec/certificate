@@ -125,13 +125,13 @@
   // --- CONFIGURATION ---
   const IMG_URL = 'assets/new-template.png';
 
-  // Canvas dimensions to match your template
+  // Canvas dimensions based on your template image
   const W = 1527;
   const H = 1080;
 
-  // **ADJUSTED** Text positions for perfect alignment
-  const NAME_POS = { x: 764, y: 540 }; // Moved down
-  const DATE_POS = { x: 764, y: 645 }; // Moved up
+  // **FINAL, CORRECTED TEXT POSITIONS**
+  const NAME_POS = { x: 764, y: 500 }; // Moved up to the correct spot
+  const DATE_POS = { x: 764, y: 650 }; // Moved up to the correct spot
   
   // Font and color styles
   const NAME_FONT = "900 60px 'Arial Black', sans-serif";
@@ -162,7 +162,7 @@
     const id = document.getElementById('distributorId').value.trim();
     const month = document.getElementById('achievementMonth').value;
     const year = document.getElementById('achievementYear').value;
-    const nameTxt = `${name.toUpperCase()} (${id})`, dateTxt = `${month}, ${year}`;
+    const nameTxt = `${name.toUpperCase()} (${id})`, dateTxt = `during ${month}, ${year}`;
 
     try {
       const img = new Image();
