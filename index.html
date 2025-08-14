@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --dxn-blue: #0d47a1;
+      --dxn-blue: #004d99;
       --success-green: #10b981;
       --light-gray: #f8f9fa;
       --dark-gray: #343a40;
@@ -50,7 +50,7 @@
     }
     input:focus, select:focus {
       outline: none; border-color: var(--dxn-blue);
-      box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.15);
+      box-shadow: 0 0 0 3px rgba(0, 77, 153, 0.15);
     }
     .form-row { display: flex; gap: 15px; }
     .form-row .form-group { flex: 1; }
@@ -65,7 +65,7 @@
     }
     .generate-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(13, 71, 161, 0.25);
+      box-shadow: 0 8px 20px rgba(0, 77, 153, 0.25);
     }
     #status {
       text-align: center; padding: 15px; margin-top: 20px;
@@ -125,21 +125,16 @@
   // --- CONFIGURATION ---
   const IMG_URL = 'assets/new-template.png';
 
-  // **IMPORTANT**: These dimensions MUST match your actual template image file.
-  // Based on your coordinates, a resolution around 1800x1270 seems likely.
-  const W = 1800; // The width of your 'new-template.png' in pixels
-  const H = 1270; // The height of your 'new-template.png' in pixels
-
-  // **UPDATED** Text positions based on your provided pixel data
-  // Using the center of the detected blue text areas.
-  const NAME_POS = { x: 1090, y: 1065 }; // Centered on the "ANSHU VERMA" text
-  const DATE_POS = { x: 1123, y: 860 };  // Centered on the "June, 2025" text
-
-  // Font and Color settings
-  const NAME_FONT = 'bold 48pt sans-serif'; // Increased font size for high-res template
-  const NAME_COLOR = '#00008B';
-  const DATE_FONT = 'normal 36pt sans-serif'; // Increased font size for high-res template
-  const DATE_COLOR = '#959EAE';
+  // Canvas and Text Settings
+  const W = 1800, H = 1270;
+  const NAME_POS = { x: 1090, y: 1065 }, DATE_POS = { x: 1123, y: 860 };
+  
+  // **MERGED FONT AND COLOR STYLES**
+  const NAME_FONT = "bold 52pt 'Arial Black', sans-serif";
+  const NAME_COLOR = '#004d99'; // Dark Blue
+  
+  const DATE_FONT = "italic 36pt 'Times New Roman', serif";
+  const DATE_COLOR = '#333333'; // Dark Gray
 
   // --- APPLICATION LOGIC ---
   const ys = document.getElementById('achievementYear');
@@ -163,7 +158,8 @@
     const id = document.getElementById('distributorId').value.trim();
     const month = document.getElementById('achievementMonth').value;
     const year = document.getElementById('achievementYear').value;
-    const nameTxt = `${name} (${id})`, dateTxt = `${month}, ${year}`;
+    // Text is converted to uppercase per your style request
+    const nameTxt = `${name.toUpperCase()} (${id})`, dateTxt = `${month}, ${year}`;
 
     try {
       const img = new Image();
@@ -179,16 +175,16 @@
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, W, H);
 
-      // --- Apply the new styles ---
+      // Apply styles
       ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle'; // Vertically center the text on the y-coordinate
+      ctx.textBaseline = 'middle';
       
-      // Draw Name with new style
+      // Draw Name with new styles
       ctx.font = NAME_FONT;
       ctx.fillStyle = NAME_COLOR;
       ctx.fillText(nameTxt, NAME_POS.x, NAME_POS.y);
       
-      // Draw Date with new style
+      // Draw Date with new styles
       ctx.font = DATE_FONT;
       ctx.fillStyle = DATE_COLOR;
       ctx.fillText(dateTxt, DATE_POS.x, DATE_POS.y);
